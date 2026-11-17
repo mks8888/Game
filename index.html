@@ -3,95 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Моя перша гра</title>
+    <title>Shadow Hunter RPG</title>
     <script src="https://telegram.org"></script>
     <style>
+        :root {
+            --bg-dark: #090c15;
+            --card-bg: #111625;
+            --border-blue: #1e3a5f;
+            --neon-blue: #00a8ff;
+            --neon-purple: #9b59b6;
+            --blood-red: #8a0303;
+            --bright-red: #ff2a2a;
+            --text-main: #e2e8f0;
+            --text-muted: #7f8fa6;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ЕКРАН ПРОЛОГУ */
+        #prologue-screen {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at center, #1a0b12 0%, #05070c 100%);
+            z-index: 100;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            user-select: none;
+            padding: 20px;
+            text-align: center;
         }
-        #player-name { color: #aaaaaa; margin-bottom: 10px; font-size: 16px; }
-        #score { font-size: 48px; font-weight: bold; margin-bottom: 30px; color: #00ffcc; }
-        #click-btn {
-            width: 160px;
-            height: 160px;
+        .boss-box {
+            width: 160px; height: 160px;
             border-radius: 50%;
-            background: radial-gradient(circle, #00ffcc, #0088ff);
-            border: none;
-            font-size: 24px;
-            font-weight: bold;
-            color: #121212;
+            border: 2px solid var(--bright-red);
+            background: radial-gradient(circle, #3d0000, #0d0000);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 70px;
+            box-shadow: 0 0 30px rgba(255, 42, 42, 0.4);
             cursor: pointer;
-            box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
-            transition: transform 0.05s;
+            transition: transform 0.08s;
+            margin: 20px 0;
         }
-        #click-btn:active { transform: scale(0.92); }
-        #upgrade-btn {
-            margin-top: 40px;
-            padding: 15px 25px;
-            font-size: 16px;
-            background-color: #2a2a2a;
-            color: #ffffff;
-            border: 1px solid #444;
+        .boss-box:active { transform: scale(0.9); }
+        .hp-bar-wrap {
+            width: 80%; height: 14px; background: #222; border-radius: 7px; overflow: hidden; border: 1px solid #444;
+        }
+        .hp-bar-fill {
+            height: 100%; background: linear-gradient(90deg, #8a0303, #ff2a2a); width: 100%; transition: width 0.2s;
+        }
+        .story-card {
+            background: rgba(17, 22, 37, 0.95);
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 168, 255, 0.2);
             border-radius: 12px;
-            cursor: pointer;
+            padding: 20px;
+            max-width: 340px;
+            animation: fadeIn 0.5s;
         }
-        #upgrade-btn:disabled { opacity: 0.4; }
+        .sword-glow {
+            font-size: 64px;
+            filter: drop-shadow(0 0 15px #00a8ff);
+            margin-bottom: 10px;
+            animation: float 2s infinite ease-in-out;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        /* ГОЛОВНИЙ ІНТЕРФЕЙС */
+        #main-app { display: none; flex-direction: column; height: 100%; }
+        .content { flex: 1; overflow-y: auto; padding: 14px; padding-bottom: 80px; }
+
+        /* ШАПКА ПРОФІЛЮ */
+        .header-grid { display: flex; gap: 10px; margin-bottom: 12px; }
+        .profile-card {
+            flex: 1.3; background: var(--card-bg); border: 1px solid var(--border-blue);
+            border-radius: 12px; padding: 10px; display: flex; align-items: center; gap: 10px;
+        }
+        .avatar {
+            width: 54px; height: 54px; border-radius: 50%;
+            background: radial-gradient(circle, #2c3e50, #000);
+            border: 2px solid var(--neon-purple);
+            display: flex; align-items: center; justify-content: center; font-size: 28px;
+            box-shadow: 0 0 12px rgba(155, 89, 182, 0.5);
+        }
+        .rank-badge {
+            background: #192a56; border: 1px solid var(--neon-blue); color: var(--neon-blue);
+            padding: 1px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; margin-left: 4px;
+        }
+        .online-card {
+            flex: 0.9; background: var(--card-bg); border: 1px solid var(--border-blue);
+            border-radius: 12px; padding: 10px; font-size: 12px; display: flex; flex-direction: column; justify-content: center;
+        }
+        .dot-green { display: inline-block; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; margin-right: 4px; }
+
+        /* РЕСУРСИ ТА ДОСВІД */
+        .res-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+        .res-box {
+            background: var(--card-bg); border: 1px solid var(--border-blue);
+            border-radius: 8px; padding: 6px; text-align: center; font-size: 12px; font-weight: bold;
+        }
+        .xp-section { margin-bottom: 16px; }
+        .xp-bar { width: 100%; height: 6px; background: #1e272e; border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, #8e44ad, #00a8ff); width: 0%; transition: width 0.3s; }
+        .xp-text { font-size: 11px; color: var(--text-muted); }
+
+        /* БЛОКИ ПОДІЙ ТА ВРАТ */
+        .section-title { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; margin: 12px 0 6px; text-transform: uppercase; }
+        .card {
+            background: var(--card-bg); border: 1px solid var(--border-blue);
+            border-radius: 12px; padding: 14px; margin-bottom: 12px; position: relative;
+        }
+        .gate-main {
+            border: 1px solid var(--neon-blue);
+            box-shadow: inset 0 0 15px rgba(0, 168, 255, 0.15);
+            text-align: center;
+        }
+        .gate-tag {
+            display: inline-block; background: #0c2461; border: 1px solid var(--neon-blue);
+            color: #fff; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+        }
+        .btn-primary {
+            width: 100%; padding: 12px; border: none; border-radius: 8px;
+            background: linear-gradient(90deg, #0077b6, #00a8ff);
+            color: #fff; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px;
+        }
+        .btn-primary:active { opacity: 0.85; }
+
+        /* ПІДЗЕМЕЛЛЯ З КРОВ'Ю */
+        .dungeon-card {
+            background: var(--card-bg); border: 1px solid var(--border-blue);
+            border-radius: 12px; padding: 14px; margin-bottom: 12px; position: relative; overflow: hidden;
+        }
+        .dungeon-hard {
+            border: 1px solid var(--bright-red);
+            background: linear-gradient(135deg, #1a080c 0%, #111625 100%);
+            box-shadow: 0 0 15px rgba(138, 3, 3, 0.4);
+        }
+        /* Ефект плям та патьоків крові на складних рівнях */
+        .blood-splatter {
+            position: absolute; top: 0; right: 0; width: 100%; height: 100%; pointer-events: none;
+            background-image: 
+                radial-gradient(circle at 88% 18%, rgba(180, 0, 0, 0.55) 0%, transparent 22%),
+                radial-gradient(circle at 95% 45%, rgba(138, 3, 3, 0.6) 0%, transparent 15%),
+                radial-gradient(circle at 78% 10%, rgba(220, 20, 20, 0.4) 0%, transparent 10%);
+        }
+        .blood-drip {
+            position: absolute; top: 0; right: 24px; width: 4px; height: 28px;
+            background: var(--bright-red); border-radius: 0 0 4px 4px; box-shadow: 0 0 6px var(--bright-red);
+        }
+        .blood-drip::after {
+            content: ''; position: absolute; top: 0; left: -12px; width: 3px; height: 18px;
+            background: var(--blood-red); border-radius: 0 0 3px 3px;
+        }
+        .btn-blood {
+            background: linear-gradient(90deg, #6e0000, #c20000);
+            border: 1px solid #ff4d4d;
+        }
+
+        /* НИЖНЄ МЕНЮ */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+            background: #070a12; border-top: 1px solid #1e272e;
+            display: grid; grid-template-columns: repeat(5, 1fr);
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 11px; cursor: pointer; gap: 4px;
+        }
+        .nav-item.active { color: var(--neon-blue); font-weight: bold; }
+        .nav-icon { font-size: 18px; }
+
+        /* МОДАЛЬНЕ ВІКНО БОЮ У ПІДЗЕМЕЛЛІ */
+        #battle-modal {
+            display: none; position: fixed; inset: 0; background: rgba(5, 7, 12, 0.96);
+            z-index: 90; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;
+        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="player-name">Привіт, Гравець!</div>
-    <div id="score">0</div>
-    <button id="click-btn">ТИСНИ!</button>
-    <button id="upgrade-btn">Покращити клік (+1) — Ціна: 10</button>
+    <!-- ЕКРАН 1: ПРОЛОГ (БОС -> СКРИНЯ -> МЕЧ -> ІСТОРІЯ) -->
+    <div id="prologue-screen">
+        <div id="stage-boss">
+            <div style="color: var(--bright-red); font-weight: bold; letter-spacing: 1px;">ЛІГВО ЗАБУТОГО КОРОЛЯ</div>
+            <h2 style="margin: 6px 0;">Страж Безодні</h2>
+            <div class="hp-bar-wrap" style="margin: 10px auto;">
+                <div class="hp-bar-fill" id="prologue-hp"></div>
+            </div>
+            <div class="boss-box" id="prologue-boss-btn">👹</div>
+            <p style="color: var(--text-muted); font-size: 13px;">Тисни на боса, щоб завдати останнього удару!</p>
+        </div>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        <div id="stage-chest" class="hidden">
+            <h2 style="color: #f1c40f; margin-bottom: 10px;">Боса переможено!</h2>
+            <div class="boss-box" id="chest-btn" style="border-color: #f1c40f; background: radial-gradient(circle, #4a3500, #0d0900); box-shadow: 0 0 30px rgba(241, 196, 15, 0.5);">🧰</div>
+            <p style="color: #f1c40f; font-size: 14px;">Натисни на стародавню скриню, щоб відкрити</p>
+        </div>
 
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            document.getElementById('player-name').innerText = "Гравець: " + tg.initDataUnsafe.user.first_name;
-        }
-
-        let score = 0;
-        let power = 1;
-        let upgradeCost = 10;
-
-        const scoreEl = document.getElementById('score');
-        const clickBtn = document.getElementById('click-btn');
-        const upgradeBtn = document.getElementById('upgrade-btn');
-
-        function updateUI() {
-            scoreEl.innerText = score;
-            upgradeBtn.innerText = `Покращити клік (+1) — Ціна: ${upgradeCost}`;
-            upgradeBtn.disabled = score < upgradeCost;
-        }
-
-        clickBtn.addEventListener('click', () => {
-            score += power;
-            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-            updateUI();
-        });
-
-        upgradeBtn.addEventListener('click', () => {
-            if (score >= upgradeCost) {
-                score -= upgradeCost;
-                power += 1;
-                upgradeCost = Math.floor(upgradeCost * 1.5);
-                updateUI();
-            }
-        });
-
-        updateUI();
-    </script>
-</body>
-</html>
+        <div id="stage-sword" class="hidden">
+            <div class="story-card">
+                
