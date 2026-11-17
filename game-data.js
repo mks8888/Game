@@ -1,7 +1,5 @@
 const GAME_DATA = {
   playerTitle: "Король-Ліч",
-  
-  // Таблиця досвіду для переходу на наступний рівень (1->2: 5000, 2->3: 7000 і т.д.)
   levelCurve:,
 
   prologue: {
@@ -11,7 +9,6 @@ const GAME_DATA = {
     storyText: "Зі скрині вирвався крижаний морок, і в твоїй руці матеріалізувався стародавній клинок. Відтепер тобі відкриті Врата у прокляті підземелля..."
   },
 
-  // СПИСОК ПІДЗЕМЕЛЬ (1–5 рівень)
   dungeons: [
     {
       lvl: 1,
@@ -21,7 +18,7 @@ const GAME_DATA = {
       xp: 1000,
       gold: 150,
       cost: 5,
-      hits: 3,      // Легкий бос (3 удари)
+      hits: 3,
       blood: false
     },
     {
@@ -32,7 +29,7 @@ const GAME_DATA = {
       xp: 2000,
       gold: 350,
       cost: 10,
-      hits: 5,      // Середній бос (5 ударів)
+      hits: 5,
       blood: true
     },
     {
@@ -43,7 +40,7 @@ const GAME_DATA = {
       xp: 2500,
       gold: 600,
       cost: 15,
-      hits: 7,      // Складний бос (7 ударів)
+      hits: 7,
       blood: true
     },
     {
@@ -54,7 +51,7 @@ const GAME_DATA = {
       xp: 3000,
       gold: 900,
       cost: 20,
-      hits: 10,     // Дуже складний бос (10 ударів)
+      hits: 10,
       blood: true
     },
     {
@@ -65,7 +62,7 @@ const GAME_DATA = {
       xp: 5000,
       gold: 1500,
       cost: 25,
-      hits: 15,     // Важкий бос для тих, хто зможе здолати (15 ударів)
+      hits: 15,
       blood: true
     }
   ]
