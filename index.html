@@ -1,214 +1,130 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shadow Hunter RPG</title>
-    <script src="https://telegram.org"></script>
-    <style>
-        :root {
-            --bg-dark: #090c15;
-            --card-bg: #111625;
-            --border-blue: #1e3a5f;
-            --neon-blue: #00a8ff;
-            --neon-purple: #9b59b6;
-            --blood-red: #8a0303;
-            --bright-red: #ff2a2a;
-            --text-main: #e2e8f0;
-            --text-muted: #7f8fa6;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Shadow Monarch RPG</title>
+<script src="https://telegram.org"></script>
+<style>
+:root{
+  --bg:#060911;--card:#0d1322;--b-blue:#1b365d;--neon:#00a8ff;
+  --neon-glow:rgba(0,168,255,0.35);--purp:#9b59b6;--red:#d90429;--txt:#f1f5f9;--mut:#64748b
+}
+*{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
-        /* ЕКРАН ПРОЛОГУ */
-        #prologue-screen {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle at center, #1a0b12 0%, #05070c 100%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-        }
-        .boss-box {
-            width: 160px; height: 160px;
-            border-radius: 50%;
-            border: 2px solid var(--bright-red);
-            background: radial-gradient(circle, #3d0000, #0d0000);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 70px;
-            box-shadow: 0 0 30px rgba(255, 42, 42, 0.4);
-            cursor: pointer;
-            transition: transform 0.08s;
-            margin: 20px 0;
-        }
-        .boss-box:active { transform: scale(0.9); }
-        .hp-bar-wrap {
-            width: 80%; height: 14px; background: #222; border-radius: 7px; overflow: hidden; border: 1px solid #444;
-        }
-        .hp-bar-fill {
-            height: 100%; background: linear-gradient(90deg, #8a0303, #ff2a2a); width: 100%; transition: width 0.2s;
-        }
-        .story-card {
-            background: rgba(17, 22, 37, 0.95);
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 168, 255, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            max-width: 340px;
-            animation: fadeIn 0.5s;
-        }
-        .sword-glow {
-            font-size: 64px;
-            filter: drop-shadow(0 0 15px #00a8ff);
-            margin-bottom: 10px;
-            animation: float 2s infinite ease-in-out;
-        }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+/* ПРОЛОГ */
+#prologue{position:fixed;inset:0;background:radial-gradient(circle at 50% 35%,#1f070d 0%,#05070d 75%);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.art-frame{
+  width:180px;height:180px;border-radius:50%;border:2px solid var(--red);
+  background:radial-gradient(circle,#38040e,#090204);
+  box-shadow:0 0 35px rgba(217,4,41,0.55),inset 0 0 20px rgba(0,0,0,0.9);
+  display:flex;align-items:center;justify-content:center;margin:22px auto;cursor:pointer;position:relative;overflow:hidden;transition:transform .08s
+}
+.art-frame:active{transform:scale(0.91)}
+.art-frame img{width:100%;height:100%;object-fit:cover}
+.hp-wrap{width:85%;max-width:300px;height:10px;background:#1a0508;border-radius:5px;overflow:hidden;border:1px solid #590d22;margin:12px auto}
+.hp-fill{height:100%;background:linear-gradient(90deg,#800f2f,#ff0a54);width:100%;transition:width .15s}
+.story-box{background:linear-gradient(180deg,#0f172a,#090d16);border:1px solid var(--neon);box-shadow:0 0 25px var(--neon-glow);border-radius:14px;padding:22px;max-width:350px}
 
-        /* ГОЛОВНИЙ ІНТЕРФЕЙС */
-        #main-app { display: none; flex-direction: column; height: 100%; }
-        .content { flex: 1; overflow-y: auto; padding: 14px; padding-bottom: 80px; }
+/* ГОЛОВНИЙ ЕКРАН */
+#app{display:none;flex-direction:column;height:100%}
+.content{flex:1;overflow-y:auto;padding:12px 12px 76px}
+.h-grid{display:flex;gap:10px;margin-bottom:10px}
+.p-card{flex:1.35;background:linear-gradient(135deg,#0f1626,#0a0f1c);border:1px solid var(--b-blue);border-radius:12px;padding:10px;display:flex;align-items:center;gap:12px}
+.ava-ring{width:56px;height:56px;border-radius:50%;padding:2px;background:linear-gradient(135deg,var(--neon),var(--purp));box-shadow:0 0 14px rgba(155,89,182,0.5);flex-shrink:0}
+.ava-inner{width:100%;height:100%;border-radius:50%;background:#090d16;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ava-inner img{width:100%;height:100%;object-fit:cover}
+.rank-box{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#0c1e38;border:1px solid var(--neon);color:var(--neon);border-radius:4px;font-weight:800;font-size:12px;margin-left:6px}
+.o-card{flex:0.85;background:var(--card);border:1px solid var(--b-blue);border-radius:12px;padding:10px;font-size:11px;display:flex;flex-direction:column;justify-content:center}
+.dot{display:inline-block;width:7px;height:7px;background:#10b981;border-radius:50%;box-shadow:0 0 6px #10b981;margin-right:5px}
 
-        /* ШАПКА ПРОФІЛЮ */
-        .header-grid { display: flex; gap: 10px; margin-bottom: 12px; }
-        .profile-card {
-            flex: 1.3; background: var(--card-bg); border: 1px solid var(--border-blue);
-            border-radius: 12px; padding: 10px; display: flex; align-items: center; gap: 10px;
-        }
-        .avatar {
-            width: 54px; height: 54px; border-radius: 50%;
-            background: radial-gradient(circle, #2c3e50, #000);
-            border: 2px solid var(--neon-purple);
-            display: flex; align-items: center; justify-content: center; font-size: 28px;
-            box-shadow: 0 0 12px rgba(155, 89, 182, 0.5);
-        }
-        .rank-badge {
-            background: #192a56; border: 1px solid var(--neon-blue); color: var(--neon-blue);
-            padding: 1px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; margin-left: 4px;
-        }
-        .online-card {
-            flex: 0.9; background: var(--card-bg); border: 1px solid var(--border-blue);
-            border-radius: 12px; padding: 10px; font-size: 12px; display: flex; flex-direction: column; justify-content: center;
-        }
-        .dot-green { display: inline-block; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; margin-right: 4px; }
+/* РЕСУРСИ ТА ДОСВІД */
+.res-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.res-box{background:var(--card);border:1px solid var(--b-blue);border-radius:8px;padding:7px 4px;display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:700}
+.xp-bar{width:100%;height:5px;background:#1e293b;border-radius:3px;overflow:hidden;margin-bottom:4px}
+.xp-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#00a8ff);width:0%;transition:width .3s}
 
-        /* РЕСУРСИ ТА ДОСВІД */
-        .res-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
-        .res-box {
-            background: var(--card-bg); border: 1px solid var(--border-blue);
-            border-radius: 8px; padding: 6px; text-align: center; font-size: 12px; font-weight: bold;
-        }
-        .xp-section { margin-bottom: 16px; }
-        .xp-bar { width: 100%; height: 6px; background: #1e272e; border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
-        .xp-fill { height: 100%; background: linear-gradient(90deg, #8e44ad, #00a8ff); width: 0%; transition: width 0.3s; }
-        .xp-text { font-size: 11px; color: var(--text-muted); }
+/* КАРТКИ ТА КНОПКИ */
+.sec-t{font-size:11px;color:var(--mut);letter-spacing:1.2px;margin:12px 0 6px;font-weight:700;text-transform:uppercase}
+.card{background:var(--card);border:1px solid var(--b-blue);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden}
+.gate-hero{border:1px solid var(--neon);background:radial-gradient(circle at top,#102542,#0b101d);box-shadow:0 0 18px rgba(0,168,255,0.15),inset 0 0 12px rgba(0,168,255,0.1);text-align:center}
+.pill-tag{display:inline-flex;align-items:center;gap:5px;background:#09192f;border:1px solid var(--neon);color:#e0f2fe;font-size:10px;font-weight:700;letter-spacing:.8px;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.btn-main{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(90deg,#0284c7,#00a8ff);box-shadow:0 4px 14px rgba(0,168,255,0.35);color:#fff;font-weight:700;font-size:13px;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-main:active{opacity:.85}
 
-        /* БЛОКИ ПОДІЙ ТА ВРАТ */
-        .section-title { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; margin: 12px 0 6px; text-transform: uppercase; }
-        .card {
-            background: var(--card-bg); border: 1px solid var(--border-blue);
-            border-radius: 12px; padding: 14px; margin-bottom: 12px; position: relative;
-        }
-        .gate-main {
-            border: 1px solid var(--neon-blue);
-            box-shadow: inset 0 0 15px rgba(0, 168, 255, 0.15);
-            text-align: center;
-        }
-        .gate-tag {
-            display: inline-block; background: #0c2461; border: 1px solid var(--neon-blue);
-            color: #fff; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
-        }
-        .btn-primary {
-            width: 100%; padding: 12px; border: none; border-radius: 8px;
-            background: linear-gradient(90deg, #0077b6, #00a8ff);
-            color: #fff; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px;
-        }
-        .btn-primary:active { opacity: 0.85; }
+/* КРИВАВІ ПІДЗЕМЕЛЛЯ */
+.d-blood{border:1px solid var(--red);background:linear-gradient(135deg,#1f060b 0%,#0d1322 85%);box-shadow:0 0 16px rgba(217,4,41,0.35)}
+.blood-fx{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 90% 15%,rgba(217,4,41,0.5) 0%,transparent 24%),radial-gradient(circle at 82% 8%,rgba(160,0,20,0.6) 0%,transparent 12%),radial-gradient(circle at 96% 55%,rgba(180,0,25,0.45) 0%,transparent 16%)}
+.drip{position:absolute;top:0;right:26px;width:4px;height:30px;background:var(--red);border-radius:0 0 4px 4px;box-shadow:0 0 8px var(--red)}
+.drip-2{position:absolute;top:0;right:38px;width:3px;height:18px;background:#9b001c;border-radius:0 0 3px 3px}
+.btn-blood{background:linear-gradient(90deg,#800f2f,#d90429);box-shadow:0 4px 14px rgba(217,4,41,0.4)}
 
-        /* ПІДЗЕМЕЛЛЯ З КРОВ'Ю */
-        .dungeon-card {
-            background: var(--card-bg); border: 1px solid var(--border-blue);
-            border-radius: 12px; padding: 14px; margin-bottom: 12px; position: relative; overflow: hidden;
-        }
-        .dungeon-hard {
-            border: 1px solid var(--bright-red);
-            background: linear-gradient(135deg, #1a080c 0%, #111625 100%);
-            box-shadow: 0 0 15px rgba(138, 3, 3, 0.4);
-        }
-        /* Ефект плям та патьоків крові на складних рівнях */
-        .blood-splatter {
-            position: absolute; top: 0; right: 0; width: 100%; height: 100%; pointer-events: none;
-            background-image: 
-                radial-gradient(circle at 88% 18%, rgba(180, 0, 0, 0.55) 0%, transparent 22%),
-                radial-gradient(circle at 95% 45%, rgba(138, 3, 3, 0.6) 0%, transparent 15%),
-                radial-gradient(circle at 78% 10%, rgba(220, 20, 20, 0.4) 0%, transparent 10%);
-        }
-        .blood-drip {
-            position: absolute; top: 0; right: 24px; width: 4px; height: 28px;
-            background: var(--bright-red); border-radius: 0 0 4px 4px; box-shadow: 0 0 6px var(--bright-red);
-        }
-        .blood-drip::after {
-            content: ''; position: absolute; top: 0; left: -12px; width: 3px; height: 18px;
-            background: var(--blood-red); border-radius: 0 0 3px 3px;
-        }
-        .btn-blood {
-            background: linear-gradient(90deg, #6e0000, #c20000);
-            border: 1px solid #ff4d4d;
-        }
+/* НАВІГАЦІЯ */
+.nav{position:fixed;bottom:0;left:0;right:0;height:62px;background:#050811;border-top:1px solid #162238;display:grid;grid-template-columns:repeat(5,1fr)}
+.n-item{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mut);font-size:10px;font-weight:600;cursor:pointer;gap:4px}
+.n-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.n-item.active{color:var(--neon)}
+.n-item.active svg{filter:drop-shadow(0 0 6px var(--neon))}
 
-        /* НИЖНЄ МЕНЮ */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
-            background: #070a12; border-top: 1px solid #1e272e;
-            display: grid; grid-template-columns: repeat(5, 1fr);
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: var(--text-muted); font-size: 11px; cursor: pointer; gap: 4px;
-        }
-        .nav-item.active { color: var(--neon-blue); font-weight: bold; }
-        .nav-icon { font-size: 18px; }
-
-        /* МОДАЛЬНЕ ВІКНО БОЮ У ПІДЗЕМЕЛЛІ */
-        #battle-modal {
-            display: none; position: fixed; inset: 0; background: rgba(5, 7, 12, 0.96);
-            z-index: 90; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;
-        }
-        .hidden { display: none !important; }
-    </style>
+#b-modal{display:none;position:fixed;inset:0;background:rgba(4,6,12,0.97);z-index:90;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.hidden{display:none!important}
+</style>
 </head>
 <body>
 
-    <!-- ЕКРАН 1: ПРОЛОГ (БОС -> СКРИНЯ -> МЕЧ -> ІСТОРІЯ) -->
-    <div id="prologue-screen">
-        <div id="stage-boss">
-            <div style="color: var(--bright-red); font-weight: bold; letter-spacing: 1px;">ЛІГВО ЗАБУТОГО КОРОЛЯ</div>
-            <h2 style="margin: 6px 0;">Страж Безодні</h2>
-            <div class="hp-bar-wrap" style="margin: 10px auto;">
-                <div class="hp-bar-fill" id="prologue-hp"></div>
-            </div>
-            <div class="boss-box" id="prologue-boss-btn">👹</div>
-            <p style="color: var(--text-muted); font-size: 13px;">Тисни на боса, щоб завдати останнього удару!</p>
-        </div>
+<div id="prologue">
+  <div id="st-boss">
+    <div style="color:var(--red);font-size:11px;font-weight:800;letter-spacing:1.5px" id="pr-loc">ЛІГВО ЗАБУТОГО КОРОЛЯ</div>
+    <h2 style="margin:6px 0;font-size:22px" id="pr-boss">Страж Безодні</h2>
+    <div class="hp-wrap"><div class="hp-fill" id="p-hp"></div></div>
+    <div class="art-frame" onclick="hitPrologue()">
+      <img src="boss.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg style="display:none;width:85px;height:85px;stroke:#ff0a54;fill:none;stroke-width:1.5" viewBox="0 0 24 24"><path d="M12 2L4 7v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V7l-8-5z"/><circle cx="9" cy="11" r="1" fill="#ff0a54"/><circle cx="15" cy="11" r="1" fill="#ff0a54"/><path d="M9 16c1.5-1 4.5-1 6 0"/></svg>
+    </div>
+    <p style="color:var(--mut);font-size:12px">Атакуй вартового натисканням</p>
+  </div>
 
-        <div id="stage-chest" class="hidden">
-            <h2 style="color: #f1c40f; margin-bottom: 10px;">Боса переможено!</h2>
-            <div class="boss-box" id="chest-btn" style="border-color: #f1c40f; background: radial-gradient(circle, #4a3500, #0d0900); box-shadow: 0 0 30px rgba(241, 196, 15, 0.5);">🧰</div>
-            <p style="color: #f1c40f; font-size: 14px;">Натисни на стародавню скриню, щоб відкрити</p>
-        </div>
+  <div id="st-chest" class="hidden">
+    <div style="color:#eab308;font-size:11px;font-weight:800;letter-spacing:1.5px">ЗДОБИЧ БОСА</div>
+    <h2 style="margin:6px 0">Запечатана Скриня</h2>
+    <div class="art-frame" onclick="openChest()" style="border-color:#eab308;background:radial-gradient(circle,#3b2804,#0a0702);box-shadow:0 0 35px rgba(234,179,8,0.45)">
+      <svg style="width:80px;height:80px;stroke:#eab308;fill:none;stroke-width:1.6" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18M12 8v12M7 8V6a5 5 0 0 1 10 0v2"/></svg>
+    </div>
+    <p style="color:#eab308;font-size:12px">Торкнися скрині, щоб відкрити</p>
+  </div>
 
-        <div id="stage-sword" class="hidden">
-            <div class="story-card">
-                
+  <div id="st-sword" class="hidden">
+    <div class="story-box">
+      <div style="width:90px;height:90px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 0 14px #00a8ff)">
+        <img src="sword.png" style="width:100%;height:100%;object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <svg style="display:none;width:75px;height:75px;stroke:#00a8ff;fill:none;stroke-width:1.6" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg>
+      </div>
+      <div style="color:var(--neon);font-size:11px;font-weight:800;letter-spacing:1px;margin-bottom:6px">[СИСТЕМА АКТИВОВАНА]</div>
+      <h3 style="margin-bottom:10px;font-size:18px" id="pr-sword-name">Клинок Тіньового Монарха</h3>
+      <p style="font-size:13px;line-height:1.5;color:#cbd5e1;margin-bottom:18px" id="pr-story">Зі скрині вирвався крижаний морок, і в твоїй руці матеріалізувався стародавній клинок. Відтепер тобі відкриті Врата у прокляті підземелля...</p>
+      <button class="btn-main" onclick="endPrologue()">Прийняти силу</button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="content">
+    <div class="h-grid">
+      <div class="p-card">
+        <div class="ava-ring">
+          <div class="ava-inner">
+            <img src="avatar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <svg style="display:none;width:30px;height:30px;stroke:#9b59b6;fill:none;stroke-width:1.6" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7v4l-2 3v2h18v-2l-2-3V9a7 7 0 0 0-7-7z"/><circle cx="9.5" cy="10" r="1" fill="#00a8ff"/><circle cx="14.5" cy="10" r="1" fill="#00a8ff"/></svg>
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:15px" id="u-name">Мисливець</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:1px" id="u-title">Король-Ліч</div>
+          <div style="margin-top:5px;font-size:12px;font-weight:700;color:#94a3b8">
+            РІВ. <span id="lvl" style="color:#fff;font-size:16px">1</span> <span class="rank-box" id="rank">E</span>
+          </div>
+        </div>
+      </div>
+      <div class="o-card">
+          
