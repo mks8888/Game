@@ -6,28 +6,16 @@
 <title>Shadow Monarch RPG</title>
 <script src="https://telegram.org"></script>
 <style>
-:root{
-  --bg:#060911;--card:#0d1322;--b-blue:#1b365d;--neon:#00a8ff;
-  --neon-glow:rgba(0,168,255,0.35);--purp:#9b59b6;--red:#d90429;--txt:#f1f5f9;--mut:#64748b
-}
+:root{--bg:#060911;--card:#0d1322;--b-blue:#1b365d;--neon:#00a8ff;--neon-glow:rgba(0,168,255,0.35);--purp:#9b59b6;--red:#d90429;--txt:#f1f5f9;--mut:#64748b}
 *{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-
-/* ПРОЛОГ */
 #prologue{position:fixed;inset:0;background:radial-gradient(circle at 50% 35%,#1f070d 0%,#05070d 75%);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
-.art-frame{
-  width:180px;height:180px;border-radius:50%;border:2px solid var(--red);
-  background:radial-gradient(circle,#38040e,#090204);
-  box-shadow:0 0 35px rgba(217,4,41,0.55),inset 0 0 20px rgba(0,0,0,0.9);
-  display:flex;align-items:center;justify-content:center;margin:22px auto;cursor:pointer;position:relative;overflow:hidden;transition:transform .08s
-}
+.art-frame{width:180px;height:180px;border-radius:50%;border:2px solid var(--red);background:radial-gradient(circle,#38040e,#090204);box-shadow:0 0 35px rgba(217,4,41,0.55),inset 0 0 20px rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;margin:22px auto;cursor:pointer;position:relative;overflow:hidden;transition:transform .08s}
 .art-frame:active{transform:scale(0.91)}
 .art-frame img{width:100%;height:100%;object-fit:cover}
 .hp-wrap{width:85%;max-width:300px;height:10px;background:#1a0508;border-radius:5px;overflow:hidden;border:1px solid #590d22;margin:12px auto}
 .hp-fill{height:100%;background:linear-gradient(90deg,#800f2f,#ff0a54);width:100%;transition:width .15s}
 .story-box{background:linear-gradient(180deg,#0f172a,#090d16);border:1px solid var(--neon);box-shadow:0 0 25px var(--neon-glow);border-radius:14px;padding:22px;max-width:350px}
-
-/* ГОЛОВНИЙ ЕКРАН */
 #app{display:none;flex-direction:column;height:100%}
 .content{flex:1;overflow-y:auto;padding:12px 12px 76px}
 .h-grid{display:flex;gap:10px;margin-bottom:10px}
@@ -38,35 +26,26 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-se
 .rank-box{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#0c1e38;border:1px solid var(--neon);color:var(--neon);border-radius:4px;font-weight:800;font-size:12px;margin-left:6px}
 .o-card{flex:0.85;background:var(--card);border:1px solid var(--b-blue);border-radius:12px;padding:10px;font-size:11px;display:flex;flex-direction:column;justify-content:center}
 .dot{display:inline-block;width:7px;height:7px;background:#10b981;border-radius:50%;box-shadow:0 0 6px #10b981;margin-right:5px}
-
-/* РЕСУРСИ ТА ДОСВІД */
 .res-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
 .res-box{background:var(--card);border:1px solid var(--b-blue);border-radius:8px;padding:7px 4px;display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:700}
 .xp-bar{width:100%;height:5px;background:#1e293b;border-radius:3px;overflow:hidden;margin-bottom:4px}
 .xp-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#00a8ff);width:0%;transition:width .3s}
-
-/* КАРТКИ ТА КНОПКИ */
 .sec-t{font-size:11px;color:var(--mut);letter-spacing:1.2px;margin:12px 0 6px;font-weight:700;text-transform:uppercase}
 .card{background:var(--card);border:1px solid var(--b-blue);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden}
 .gate-hero{border:1px solid var(--neon);background:radial-gradient(circle at top,#102542,#0b101d);box-shadow:0 0 18px rgba(0,168,255,0.15),inset 0 0 12px rgba(0,168,255,0.1);text-align:center}
 .pill-tag{display:inline-flex;align-items:center;gap:5px;background:#09192f;border:1px solid var(--neon);color:#e0f2fe;font-size:10px;font-weight:700;letter-spacing:.8px;padding:4px 12px;border-radius:20px;margin-bottom:10px}
 .btn-main{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(90deg,#0284c7,#00a8ff);box-shadow:0 4px 14px rgba(0,168,255,0.35);color:#fff;font-weight:700;font-size:13px;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
 .btn-main:active{opacity:.85}
-
-/* КРИВАВІ ПІДЗЕМЕЛЛЯ */
 .d-blood{border:1px solid var(--red);background:linear-gradient(135deg,#1f060b 0%,#0d1322 85%);box-shadow:0 0 16px rgba(217,4,41,0.35)}
 .blood-fx{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 90% 15%,rgba(217,4,41,0.5) 0%,transparent 24%),radial-gradient(circle at 82% 8%,rgba(160,0,20,0.6) 0%,transparent 12%),radial-gradient(circle at 96% 55%,rgba(180,0,25,0.45) 0%,transparent 16%)}
 .drip{position:absolute;top:0;right:26px;width:4px;height:30px;background:var(--red);border-radius:0 0 4px 4px;box-shadow:0 0 8px var(--red)}
 .drip-2{position:absolute;top:0;right:38px;width:3px;height:18px;background:#9b001c;border-radius:0 0 3px 3px}
 .btn-blood{background:linear-gradient(90deg,#800f2f,#d90429);box-shadow:0 4px 14px rgba(217,4,41,0.4)}
-
-/* НАВІГАЦІЯ */
 .nav{position:fixed;bottom:0;left:0;right:0;height:62px;background:#050811;border-top:1px solid #162238;display:grid;grid-template-columns:repeat(5,1fr)}
 .n-item{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mut);font-size:10px;font-weight:600;cursor:pointer;gap:4px}
 .n-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
 .n-item.active{color:var(--neon)}
 .n-item.active svg{filter:drop-shadow(0 0 6px var(--neon))}
-
 #b-modal{display:none;position:fixed;inset:0;background:rgba(4,6,12,0.97);z-index:90;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
 .hidden{display:none!important}
 </style>
@@ -127,4 +106,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-se
         </div>
       </div>
       <div class="o-card">
-          
+        <div><span class="dot"></span><b>187</b> в мережі</div>
+        <div style="color:var(--mut);font-size:10px;margin:2px 0 6px">гравців за добу: 2 813</div>
+        
