@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Моя перша гра</title>
+    <script src="https://telegram.org"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            user-select: none;
+        }
+        #player-name { color: #aaaaaa; margin-bottom: 10px; font-size: 16px; }
+        #score { font-size: 48px; font-weight: bold; margin-bottom: 30px; color: #00ffcc; }
+        #click-btn {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #00ffcc, #0088ff);
+            border: none;
+            font-size: 24px;
+            font-weight: bold;
+            color: #121212;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
+            transition: transform 0.05s;
+        }
+        #click-btn:active { transform: scale(0.92); }
+        #upgrade-btn {
+            margin-top: 40px;
+            padding: 15px 25px;
+            font-size: 16px;
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #444;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        #upgrade-btn:disabled { opacity: 0.4; }
+    </style>
+</head>
+<body>
+
+    <div id="player-name">Привіт, Гравець!</div>
+    <div id="score">0</div>
+    <button id="click-btn">ТИСНИ!</button>
+    <button id="upgrade-btn">Покращити клік (+1) — Ціна: 10</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            document.getElementById('player-name').innerText = "Гравець: " + tg.initDataUnsafe.user.first_name;
+        }
+
+        let score = 0;
+        let power = 1;
+        let upgradeCost = 10;
+
+        const scoreEl = document.getElementById('score');
+        const clickBtn = document.getElementById('click-btn');
+        const upgradeBtn = document.getElementById('upgrade-btn');
+
+        function updateUI() {
+            scoreEl.innerText = score;
+            upgradeBtn.innerText = `Покращити клік (+1) — Ціна: ${upgradeCost}`;
+            upgradeBtn.disabled = score < upgradeCost;
+        }
+
+        clickBtn.addEventListener('click', () => {
+            score += power;
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            updateUI();
+        });
+
+        upgradeBtn.addEventListener('click', () => {
+            if (score >= upgradeCost) {
+                score -= upgradeCost;
+                power += 1;
+                upgradeCost = Math.floor(upgradeCost * 1.5);
+                updateUI();
+            }
+        });
+
+        updateUI();
+    </script>
+</body>
+</html>
