@@ -54,18 +54,10 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-se
 .hp-player{height:100%;background:linear-gradient(90deg,#0284c7,#38bdf8);width:100%;transition:width .2s}
 .hp-enemy{height:100%;background:linear-gradient(90deg,#991b1b,#ef4444);width:100%;transition:width .2s}
 
-/* СЦЕНА ДУЕЛІ */
-.duel-arena{
-  flex:1;position:relative;display:flex;align-items:flex-end;justify-content:space-between;
-  padding:10px 4px 16px;overflow:hidden;margin:4px 0
-}
-.fighter-slot{
-  position:relative;width:48%;height:88%;max-height:300px;display:flex;align-items:flex-end;justify-content:center;
-  animation:breathe 2.6s infinite ease-in-out;transition:transform .15s,filter .1s
-}
+.duel-arena{flex:1;position:relative;display:flex;align-items:flex-end;justify-content:space-between;padding:10px 4px 16px;overflow:hidden;margin:4px 0}
+.fighter-slot{position:relative;width:48%;height:88%;max-height:300px;display:flex;align-items:flex-end;justify-content:center;animation:breathe 2.6s infinite ease-in-out;transition:transform .15s,filter .1s}
 .fighter-slot img{height:100%;width:100%;object-fit:contain;mix-blend-mode:lighten;pointer-events:none}
 
-/* Анімації ривків та влучань */
 .lunge-right{animation:lungeR 0.35s ease-out!important}
 @keyframes lungeR{0%{transform:translateX(0)}40%{transform:translateX(55px) scale(1.06)}100%{transform:translateX(0)}}
 
@@ -78,7 +70,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-se
 .shield-aura{box-shadow:0 0 28px rgba(0,168,255,0.8),inset 0 0 15px rgba(0,168,255,0.6);border-radius:50%}
 @keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
-/* ПРИЦІЛЬНІ ЗОНИ НА ГОБЛІНІ (ПРАВИЙ БОЄЦЬ) */
+/* ПРИЦІЛЬНІ ЗОНИ НА ГОБЛІНІ */
 .hit-zone{
   position:absolute;border:1.5px dashed rgba(255,255,255,0.5);background:rgba(13,19,34,0.65);
   backdrop-filter:blur(2px);border-radius:10px;color:#fff;font-size:9px;font-weight:800;
@@ -121,10 +113,13 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-se
     <div class="profile-left">
       <div class="ava-ring">
         <div class="ava-inner">
-          <img src="hero.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <img src="hero.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
           <svg style="display:none;width:26px;height:26px;stroke:#9b59b6;fill:none;stroke-width:1.6" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7v4l-2 3v2h18v-2l-2-3V9a7 7 0 0 0-7-7z"/><circle cx="9.5" cy="10" r="1" fill="#00a8ff"/><circle cx="14.5" cy="10" r="1" fill="#00a8ff"/></svg>
         </div>
       </div>
       <div>
         <div style="font-weight:800;font-size:15px" id="u-name">Мисливець</div>
-        
+        <div style="font-size:11px;color:#94a3b8">РІВ. <b style="color:#fff" id="lvl">1</b> <span class="rank-box" id="rank">E</span></div>
+      </div>
+    </div>
+    
