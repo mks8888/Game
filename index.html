@@ -16,20 +16,23 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-se
 .profile-left{display:flex;align-items:center;gap:10px}
 .ava-ring{width:50px;height:50px;border-radius:50%;padding:2px;background:linear-gradient(135deg,var(--neon),var(--purp));box-shadow:0 0 12px rgba(155,89,182,0.5);flex-shrink:0}
 .ava-inner{width:100%;height:100%;border-radius:50%;background:#090d16;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.ava-inner img{width:100%;height:100%;object-fit:cover}
+.ava-inner img{width:100%;height:100%;object-fit:cover;object-position:top}
 .rank-box{display:inline-flex;align-items:center;justify-content:center;padding:1px 6px;background:#0c1e38;border:1px solid var(--neon);color:var(--neon);border-radius:4px;font-weight:800;font-size:11px;margin-left:4px}
 .bal-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .bal-pill{background:var(--card);border:1px solid var(--b-blue);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700}
 .xp-bar{width:100%;height:4px;background:#1e293b;border-radius:2px;overflow:hidden}
 .xp-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#00a8ff);width:0%;transition:width .3s}
 
-/* ГОЛОВНИЙ ЕКРАН ТА ВКЛАДКИ */
+/* ГОЛОВНИЙ ЕКРАН З ГЕРОЄМ ПЕРЕД ПОРТАЛОМ */
 .content{flex:1;position:relative;overflow-y:auto;padding-bottom:68px;display:flex;flex-direction:column}
 .bg-layer{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.85}
-.bg-vignette{position:fixed;inset:0;background:linear-gradient(180deg,rgba(6,9,17,0.7) 0%,rgba(6,9,17,0.15) 50%,rgba(6,9,17,0.96) 92%);z-index:1;pointer-events:none}
-.home-wrap{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:20px}
-.tab-page{position:relative;z-index:5;padding:14px}
+.bg-vignette{position:fixed;inset:0;background:linear-gradient(180deg,rgba(6,9,17,0.65) 0%,rgba(6,9,17,0.1) 45%,rgba(6,9,17,0.97) 90%);z-index:1;pointer-events:none}
+.home-wrap{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:10px 20px 20px}
 
+.hero-stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:220px}
+.hero-sprite{height:100%;max-height:310px;width:auto;object-fit:contain;mix-blend-mode:lighten;animation:breathe 3s infinite ease-in-out;filter:drop-shadow(0 0 18px rgba(155,89,182,0.4))}
+
+.tab-page{position:relative;z-index:5;padding:14px}
 .btn-main{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(90deg,#0284c7,#00a8ff);box-shadow:0 4px 16px rgba(0,168,255,0.4);color:#fff;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-main:active{transform:scale(0.97)}
 .card{background:rgba(13,19,34,0.92);backdrop-filter:blur(6px);border:1px solid var(--b-blue);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden}
@@ -40,64 +43,67 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-se
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(4,6,12,0.94);backdrop-filter:blur(6px);z-index:90;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center}
 .modal-box{background:linear-gradient(180deg,#111827,#090d16);border:1px solid var(--neon);box-shadow:0 0 25px rgba(0,168,255,0.25);border-radius:16px;padding:20px;width:100%;max-width:360px}
 
-/* БОЙОВА АРЕНА З ЖИВОЮ МОДЕЛЛЮ */
-.battle-screen{display:none;position:fixed;inset:0;background:#05070d;z-index:95;flex-direction:column;justify-content:space-between;padding:14px}
+/* ДУЕЛЬНА АРЕНА (ГЕРОЙ ЗЛІВА vs ГОБЛІН СПРАВА) */
+.battle-screen{display:none;position:fixed;inset:0;background:#05070d;z-index:95;flex-direction:column;justify-content:space-between;padding:12px}
 .battle-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.45;z-index:0}
 .battle-ui{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;justify-content:space-between}
-.hp-box{background:rgba(10,14,24,0.9);border:1px solid #1e293b;border-radius:10px;padding:8px 12px}
-.hp-bar{width:100%;height:8px;background:#1e293b;border-radius:4px;overflow:hidden;margin-top:5px}
-.hp-enemy{height:100%;background:linear-gradient(90deg,#991b1b,#ef4444);width:100%;transition:width .2s}
+
+.dual-hp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hp-box{background:rgba(10,14,24,0.92);border:1px solid #1e293b;border-radius:10px;padding:8px 10px}
+.hp-bar{width:100%;height:7px;background:#1e293b;border-radius:4px;overflow:hidden;margin-top:5px}
 .hp-player{height:100%;background:linear-gradient(90deg,#0284c7,#38bdf8);width:100%;transition:width .2s}
+.hp-enemy{height:100%;background:linear-gradient(90deg,#991b1b,#ef4444);width:100%;transition:width .2s}
 
-/* СЦЕНА МОДЕЛЬКИ ВОРОГА */
-.stage-wrap{flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:6px 0}
-.enemy-model{
-  position:relative;height:100%;max-height:330px;width:240px;display:flex;align-items:center;justify-content:center;
-  animation:breathe 2.6s infinite ease-in-out;transition:filter .1s
+/* СЦЕНА ДУЕЛІ */
+.duel-arena{
+  flex:1;position:relative;display:flex;align-items:flex-end;justify-content:space-between;
+  padding:10px 4px 16px;overflow:hidden;margin:4px 0
 }
-.enemy-model img{height:100%;width:100%;object-fit:contain;mix-blend-mode:lighten;pointer-events:none;filter:drop-shadow(0 0 18px rgba(0,0,0,0.9))}
-@keyframes breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.015)}}
+.fighter-slot{
+  position:relative;width:48%;height:88%;max-height:300px;display:flex;align-items:flex-end;justify-content:center;
+  animation:breathe 2.6s infinite ease-in-out;transition:transform .15s,filter .1s
+}
+.fighter-slot img{height:100%;width:100%;object-fit:contain;mix-blend-mode:lighten;pointer-events:none}
+
+/* Анімації ривків та влучань */
+.lunge-right{animation:lungeR 0.35s ease-out!important}
+@keyframes lungeR{0%{transform:translateX(0)}40%{transform:translateX(55px) scale(1.06)}100%{transform:translateX(0)}}
+
+.lunge-left{animation:lungeL 0.35s ease-out!important}
+@keyframes lungeL{0%{transform:translateX(0)}40%{transform:translateX(-55px) scale(1.06)}100%{transform:translateX(0)}}
+
 .hit-shake{animation:shake 0.3s!important;filter:brightness(1.8) sepia(1) hue-rotate(-50deg) saturate(5)!important}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px) rotate(-2deg)}75%{transform:translateX(12px) rotate(2deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(10px)}75%{transform:translateX(-10px)}}
 
-/* ІНТЕРАКТИВНІ ЗОНИ НА ТІЛІ (ГОЛОВА, РУКА, ТІЛО) */
+.shield-aura{box-shadow:0 0 28px rgba(0,168,255,0.8),inset 0 0 15px rgba(0,168,255,0.6);border-radius:50%}
+@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* ПРИЦІЛЬНІ ЗОНИ НА ГОБЛІНІ (ПРАВИЙ БОЄЦЬ) */
 .hit-zone{
-  position:absolute;border:1.5px dashed rgba(255,255,255,0.45);background:rgba(13,19,34,0.55);
-  backdrop-filter:blur(2px);border-radius:12px;color:#fff;font-size:10px;font-weight:800;
+  position:absolute;border:1.5px dashed rgba(255,255,255,0.5);background:rgba(13,19,34,0.65);
+  backdrop-filter:blur(2px);border-radius:10px;color:#fff;font-size:9px;font-weight:800;
   display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;
-  box-shadow:0 0 12px rgba(0,0,0,0.7);transition:transform .08s,border-color .2s;z-index:10
+  box-shadow:0 0 10px rgba(0,0,0,0.8);z-index:10;padding:2px 4px;text-align:center
 }
-.hit-zone:active{transform:scale(0.92);border-color:var(--neon);background:rgba(0,168,255,0.3)}
-.zone-head{top:6%;left:50%;transform:translateX(-50%);width:105px;height:52px;border-color:rgba(239,68,68,0.8)}
+.hit-zone:active{transform:scale(0.92);border-color:var(--neon);background:rgba(0,168,255,0.35)}
+.zone-head{top:4%;left:50%;transform:translateX(-50%);width:88px;height:44px;border-color:rgba(239,68,68,0.85)}
 .zone-head:active{transform:translateX(-50%) scale(0.92)}
 .zone-head.disabled{opacity:0.35;pointer-events:none;border-color:#475569}
-.zone-body{top:38%;left:50%;transform:translateX(-50%);width:115px;height:68px;border-color:rgba(0,168,255,0.75)}
+.zone-body{top:38%;left:50%;transform:translateX(-50%);width:94px;height:54px;border-color:rgba(0,168,255,0.8)}
 .zone-body:active{transform:translateX(-50%) scale(0.92)}
-.zone-arm{top:42%;right:2px;width:82px;height:56px;border-color:rgba(234,179,8,0.8)}
+.zone-arm{top:42%;left:-6px;width:68px;height:46px;border-color:rgba(234,179,8,0.85)}
 
-/* ЕФЕКТ РОЗРІЗУ ТА ВИЛІТАЮЧИЙ ТЕКСТ */
-.slash-fx{
-  position:absolute;width:160px;height:4px;background:#fff;box-shadow:0 0 15px #00a8ff,0 0 30px #ef4444;
-  transform:rotate(-35deg) scaleX(0);opacity:0;pointer-events:none;z-index:15
-}
+.slash-fx{position:absolute;width:120px;height:4px;background:#fff;box-shadow:0 0 15px #00a8ff,0 0 30px #ef4444;transform:rotate(-35deg) scaleX(0);opacity:0;pointer-events:none;z-index:15}
 .slash-anim{animation:slash 0.25s ease-out}
 @keyframes slash{0%{transform:rotate(-35deg) scaleX(0);opacity:1}50%{transform:rotate(-35deg) scaleX(1.2);opacity:1}100%{transform:rotate(-35deg) scaleX(1.4);opacity:0}}
 
-.dmg-pop{
-  position:absolute;top:25%;left:50%;transform:translateX(-50%);font-size:20px;font-weight:900;
-  color:#ff2a2a;text-shadow:0 2px 8px #000;pointer-events:none;z-index:20;animation:floatUp 0.8s forwards
-}
-@keyframes floatUp{0%{opacity:1;transform:translate(-50%,0) scale(0.8)}50%{transform:translate(-50%,-25px) scale(1.15)}100%{opacity:0;transform:translate(-50%,-45px) scale(1)}}
+.dmg-pop{position:absolute;top:15%;left:50%;transform:translateX(-50%);font-size:17px;font-weight:900;text-shadow:0 2px 8px #000;pointer-events:none;z-index:20;animation:floatUp 0.8s forwards;white-space:nowrap}
+@keyframes floatUp{0%{opacity:1;transform:translate(-50%,0) scale(0.8)}50%{transform:translate(-50%,-22px) scale(1.1)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}
 
-.log-box{background:rgba(6,9,17,0.88);border:1px solid #1e3a5f;border-radius:8px;padding:8px 10px;font-size:12px;color:#e2e8f0;min-height:46px;display:flex;align-items:center;justify-content:center;text-align:center;margin-bottom:8px}
-.shield-btn{
-  width:100%;padding:12px;border-radius:10px;border:1px solid #eab308;
-  background:linear-gradient(90deg,#422006,#713f12);color:#fef08a;font-weight:800;font-size:13px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px
-}
+.log-box{background:rgba(6,9,17,0.9);border:1px solid #1e3a5f;border-radius:8px;padding:8px 10px;font-size:12px;color:#e2e8f0;min-height:48px;display:flex;align-items:center;justify-content:center;text-align:center;margin-bottom:8px}
+.shield-btn{width:100%;padding:13px;border-radius:10px;border:1px solid #eab308;background:linear-gradient(90deg,#422006,#713f12);color:#fef08a;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
 .shield-btn:active{transform:scale(0.97)}
 
-/* НИЖНЯ НАВІГАЦІЯ */
 .nav{position:fixed;bottom:0;left:0;right:0;height:62px;background:#050811;border-top:1px solid #162238;display:grid;grid-template-columns:repeat(5,1fr);z-index:30}
 .n-item{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mut);font-size:10px;font-weight:600;cursor:pointer;gap:4px}
 .n-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
@@ -115,24 +121,10 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',Roboto,sans-se
     <div class="profile-left">
       <div class="ava-ring">
         <div class="ava-inner">
-          <img src="avatar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <img src="hero.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
           <svg style="display:none;width:26px;height:26px;stroke:#9b59b6;fill:none;stroke-width:1.6" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7v4l-2 3v2h18v-2l-2-3V9a7 7 0 0 0-7-7z"/><circle cx="9.5" cy="10" r="1" fill="#00a8ff"/><circle cx="14.5" cy="10" r="1" fill="#00a8ff"/></svg>
         </div>
       </div>
       <div>
         <div style="font-weight:800;font-size:15px" id="u-name">Мисливець</div>
-        <div style="font-size:11px;color:#94a3b8">РІВ. <b style="color:#fff" id="lvl">1</b> <span class="rank-box" id="rank">E</span></div>
-      </div>
-    </div>
-    <div class="bal-right">
-      <div class="bal-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><circle cx="12" cy="12" r="9"/></svg><span id="gold">500</span></div>
-      <div class="bal-pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="#eab308"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span id="en">80</span>/80</div>
-    </div>
-  </div>
-  <div class="xp-bar"><div class="xp-fill" id="xp-bar"></div></div>
-  <div style="font-size:10px;color:#94a3b8;margin-top:3px;text-align:right">Досвід: <span id="xp">0</span> / <span id="xp-max">5000</span></div>
-</div>
-
-<div class="content">
-  <div class="home-wrap" id="t-home">
-    
+        
