@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -8,12 +8,12 @@
     <style>
         :root {
             --bg-dark: #0a0b10;
-            --card-bg: rgba(19, 22, 34, 0.9);
+            --card-bg: rgba(19, 22, 34, 0.92);
             --accent-blue: #0099ff;
             --accent-purple: #8a2be2;
             --text-main: #ffffff;
             --text-muted: #a0aab5;
-            --border-color: rgba(255, 255, 255, 0.12);
+            --border-color: rgba(255, 255, 255, 0.14);
         }
 
         * {
@@ -32,32 +32,32 @@
             overflow-x: hidden;
         }
 
-        /* Синий фон на главном экране (bg.png) */
         body {
             display: flex;
             flex-direction: column;
             padding-bottom: 72px;
-            background-image: linear-gradient(to bottom, rgba(10, 11, 16, 0.55), rgba(10, 11, 16, 0.92)), url('bg.png');
+            background-image: linear-gradient(to bottom, rgba(10, 11, 16, 0.5), rgba(10, 11, 16, 0.92)), url('bg.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             transition: background-image 0.4s ease;
         }
 
-        /* Красный фон во время боя в Вратах (червоний.png) */
-        body.battle-mode {
-            background-image: linear-gradient(to bottom, rgba(15, 5, 5, 0.6), rgba(10, 5, 5, 0.92)), url('червоний.png');
+        /* Красный фон для кровавых врат */
+        body.blood-mode {
+            background-image: linear-gradient(to bottom, rgba(20, 5, 5, 0.55), rgba(10, 5, 5, 0.94)), url('%D1%87%D0%B5%D1%80%D0%B2%D0%BE%D0%BD%D0%B8%D0%B9.png');
         }
 
         /* Верхняя панель */
         .header {
             padding: 12px 16px;
-            background: rgba(13, 15, 23, 0.85);
+            background: rgba(13, 15, 23, 0.88);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 10;
         }
 
         .profile-info {
@@ -72,13 +72,18 @@
             border-radius: 50%;
             border: 2px solid var(--accent-purple);
             overflow: hidden;
-            background: #000;
+            background: #1a1033;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
         }
 
         .avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .rank-badge {
@@ -115,7 +120,8 @@
             font-size: 11px;
             color: var(--text-muted);
             padding: 4px 16px;
-            background: rgba(10, 11, 16, 0.75);
+            background: rgba(10, 11, 16, 0.8);
+            z-index: 10;
         }
 
         /* Основной контент */
@@ -124,6 +130,7 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
+            z-index: 5;
         }
 
         .tab-section {
@@ -136,7 +143,7 @@
             display: flex;
         }
 
-        /* Картинка героя (герой.jpg) */
+        /* Картинка героя */
         .hero-artwork {
             flex: 1;
             display: flex;
@@ -147,8 +154,9 @@
             overflow: hidden;
             border: 1px solid rgba(138, 43, 226, 0.45);
             box-shadow: 0 0 25px rgba(138, 43, 226, 0.25);
-            background: #000;
-            max-height: 360px;
+            background: #050508;
+            min-height: 220px;
+            max-height: 350px;
         }
 
         .hero-artwork img {
@@ -170,11 +178,15 @@
             margin-bottom: 4px;
         }
 
+        .gate-subtitle.blood {
+            color: #e74c3c;
+        }
+
         .gate-title {
             font-size: 24px;
             font-weight: 800;
             margin-bottom: 14px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
         }
 
         /* Кнопки */
@@ -258,7 +270,7 @@
 
         .modal-actions button { flex: 1; }
 
-        /* Экран боя и монстр (гоблін.png) */
+        /* Экран боя */
         .battle-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -269,7 +281,7 @@
 
         .monster-box {
             width: 100%;
-            height: 200px;
+            height: 190px;
             background: #000;
             border-radius: 10px;
             overflow: hidden;
@@ -323,6 +335,31 @@
             margin-top: auto;
         }
 
+        /* Выбор подземелья */
+        .dungeon-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .dungeon-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            color: white;
+        }
+
+        .dungeon-item.selected {
+            border-color: var(--accent-blue);
+            background: rgba(0, 153, 255, 0.15);
+        }
+
         /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
@@ -334,38 +371,4 @@
             border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .nav-item {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 11px;
-            gap: 4px;
-            padding: 6px 10px;
-        }
-
-        .nav-item.active {
-            color: var(--accent-blue);
-        }
-
-        .nav-icon { font-size: 18px; }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <div class="profile-info">
-            <div class="avatar">
-                <img src="герой.jpg" alt="Охотник">
-            </div>
-            <div>
-                <div style="font-weight: 700;">Охотник</div>
-                <div style="font-size: 12px; color: var(--text-muted);">
-                    УР. <strong style="color: white;" id="ui-lvl">1</strong>
-                    
+       
