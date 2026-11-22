@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Shadow RPG</title>
-<script src="https://telegram.org"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#0a0b10;color:#fff;overflow-x:hidden}
@@ -117,8 +116,6 @@ body.blood{background-image:url("червоний.png")}
 </div>
 
 <script>
-try { if (window.Telegram && Telegram.WebApp) { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } } catch(e) {}
-
 var G1 = { id: 1, tag: "Уровень 1", name: "Катакомбы Скелетов", boss: "Повелитель Костей", xp: 1000, gold: 150, cost: 5, hits: 3, red: false };
 var G2 = { id: 2, tag: "Уровень 2 • КРОВАВЫЙ", name: "Кровавая Тюрьма", boss: "Кровавый Палач", xp: 2000, gold: 350, cost: 10, hits: 5, red: true };
 var G3 = { id: 3, tag: "Уровень 3 • КОШМАР", name: "Трон Красного Дракона", boss: "Кровавая Виверна", xp: 2500, gold: 600, cost: 15, hits: 7, red: true };
@@ -149,4 +146,7 @@ function sync() {
   try { localStorage.setItem("shadow_rpg_stable", JSON.stringify(game)); } catch(e) {}
   document.getElementById("ui-lvl").textContent = game.lvl;
   document.getElementById("ui-rnk").textContent = game.lvl >= 10 ? "S" : game.lvl >= 7 ? "A" : game.lvl >= 5 ? "B" : game.lvl >= 3 ? "C" : game.lvl >= 2 ? "D" : "E";
+  document.getElementById("ui-gold").textContent = game.gold;
+  document.getElementById("ui-eng").textContent = game.eng;
+  document.getElementById("ui-exp").textContent = game.exp;
   
