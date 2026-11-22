@@ -8,7 +8,7 @@
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#0a0b10;color:#fff;overflow-x:hidden}
 body{display:flex;flex-direction:column;min-height:100dvh;padding-bottom:68px;background:#0a0b10 url("bg.png") center/cover no-repeat fixed}
-body.blood{background-image:url("червоний.png")}
+body.blood{background-image:url("red.png")}
 .shade{position:fixed;inset:0;background:rgba(8,10,16,.62);z-index:0;pointer-events:none}
 .hdr{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(13,16,25,.92);border-bottom:1px solid rgba(255,255,255,.1)}
 .user{display:flex;align-items:center;gap:10px}
@@ -47,7 +47,7 @@ body.blood{background-image:url("червоний.png")}
 
 <div class="hdr">
   <div class="user">
-    <div class="ava" id="ava-box"><img src="герой.jpg" alt="" onerror="document.getElementById('ava-box').textContent='👿'"></div>
+    <div class="ava" id="ava-box"><img src="hero.jpg" alt="" onerror="document.getElementById('ava-box').textContent='👿'"></div>
     <div>
       <b>Король-Лич</b>
       <div style="font-size:12px;color:#9aa5b4">УР. <b id="ui-lvl" style="color:#fff">1</b> <span class="rnk" id="ui-rnk">E</span></div>
@@ -63,7 +63,7 @@ body.blood{background-image:url("червоний.png")}
 <div class="main">
   <div id="p-home" class="page on">
     <div class="hero-box" id="hero-box">
-      <img src="герой.jpg" alt="" onerror="document.getElementById('hero-box').innerHTML='<span style=font-size:70px>👿</span>'">
+      <img src="hero.jpg" alt="" onerror="document.getElementById('hero-box').innerHTML='<span style=font-size:70px>👿</span>'">
     </div>
     <div style="margin-top:auto">
       <div id="h-tag" style="color:#3498db;font-size:11px;font-weight:700;margin-bottom:4px">Уровень 1</div>
@@ -80,7 +80,7 @@ body.blood{background-image:url("червоний.png")}
         <div class="hp-track"><div class="hp-fill" id="f-bar" style="width:100%"></div></div>
       </div>
       <div class="mon-box" id="mon-box">
-        <img src="гоблін.png" alt="" onerror="document.getElementById('mon-box').innerHTML='<span style=font-size:70px>👹</span>'">
+        <img src="goblin.png" alt="" onerror="document.getElementById('mon-box').innerHTML='<span style=font-size:70px>👹</span>'">
       </div>
       <div class="card" style="padding:8px;font-size:11px;color:#9aa5b4">• Голова: Ваншот (шанс 60%, промах 40% + пропуск 1 хода).</div>
       <div class="log" id="f-log"></div>
@@ -115,38 +115,6 @@ body.blood{background-image:url("червоний.png")}
   <button type="button" id="nav-more" onclick="goPage('more')">⚙️<span>Ещё</span></button>
 </div>
 
-<script>
-var G1 = { id: 1, tag: "Уровень 1", name: "Катакомбы Скелетов", boss: "Повелитель Костей", xp: 1000, gold: 150, cost: 5, hits: 3, red: false };
-var G2 = { id: 2, tag: "Уровень 2 • КРОВАВЫЙ", name: "Кровавая Тюрьма", boss: "Кровавый Палач", xp: 2000, gold: 350, cost: 10, hits: 5, red: true };
-var G3 = { id: 3, tag: "Уровень 3 • КОШМАР", name: "Трон Красного Дракона", boss: "Кровавая Виверна", xp: 2500, gold: 600, cost: 15, hits: 7, red: true };
-var G4 = { id: 4, tag: "Уровень 4 • БЕЗДНА", name: "Алтарь Проклятых Душ", boss: "Архилич Мортис", xp: 3000, gold: 900, cost: 20, hits: 10, red: true };
-var G5 = { id: 5, tag: "Уровень 5 • СМЕРТЕЛЬНЫЙ", name: "Сердце Чёрной Бездны", boss: "Монарх Разрушения", xp: 5000, gold: 1500, cost: 25, hits: 15, red: true };
-var ALL_GATES = [G1, G2, G3, G4, G5];
-
-var game = { lvl: 1, gold: 500, eng: 80, exp: 0, gid: 1 };
-try {
-  var raw = localStorage.getItem("shadow_rpg_stable");
-  if (raw) {
-    var obj = JSON.parse(raw);
-    if (obj && obj.lvl) game = obj;
-  }
-} catch(e) {}
-
-function activeGate() {
-  if (game.gid === 2) return G2;
-  if (game.gid === 3) return G3;
-  if (game.gid === 4) return G4;
-  if (game.gid === 5) return G5;
-  return G1;
-}
-
-var fight = { on: false, gate: G1, hp: 3, max: 3, skip: false };
-
-function sync() {
-  try { localStorage.setItem("shadow_rpg_stable", JSON.stringify(game)); } catch(e) {}
-  document.getElementById("ui-lvl").textContent = game.lvl;
-  document.getElementById("ui-rnk").textContent = game.lvl >= 10 ? "S" : game.lvl >= 7 ? "A" : game.lvl >= 5 ? "B" : game.lvl >= 3 ? "C" : game.lvl >= 2 ? "D" : "E";
-  document.getElementById("ui-gold").textContent = game.gold;
-  document.getElementById("ui-eng").textContent = game.eng;
-  document.getElementById("ui-exp").textContent = game.exp;
-  
+<script src="game.js"></script>
+</body>
+</html>
